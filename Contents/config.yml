@@ -1,0 +1,92 @@
+# Plugin configuration
+#
+# This configuration setup allows for easy, environment-specific configuration.
+# Its settings can be inserted into other files at build-time, or loaded by
+# python code at run-time.
+
+# Default settings.  This is never read directly.  Instead, it's extended by
+# other sections below.
+default: &default
+  PLUGIN_ID:          com.plexapp.plugins.mlb
+  PLUGIN_NAME:        Major League Baseball
+  PLUGIN_PREFIX:      /video/mlb
+  PLUGIN_VERSION:     0.3.2
+  PLUGIN_AUTHOR:      Rick Fletcher <fletch@pobox.com>
+  PLUGIN_DESCRIPTION: A Plex plugin for mlb.com -- the official site of Major
+    League Baseball. Coverage includes video clips, interviews, exclusive
+    stories, as well as live games for MLB.tv subscribers.
+
+  VERSION_IN_PLUGIN_NAME: false
+
+  CACHE_TTL: 1800
+  GAME_CACHE_TTL: 60
+
+  PLIST_DEBUG: 0 
+  PLIST_DEV_MODE: 0
+
+  # table column order on http://mlb.mlb.com/mediacenter/
+  # (empty values are columns to discard)
+  MEDIA_COLUMNS:
+    - # regular season
+      -
+      -
+      - video_premium_away
+      - video_premium_home
+      - video_premium_national
+      - video_basic
+      - audio_away
+      - audio_home
+      - audio_alt_away
+      - audio_alt_home
+      - condensed
+      - highlights
+    - # postseason
+      -
+      -
+      - video_premium_national
+      -
+      - audio_away
+      - audio_home
+      - audio_alt_away
+      - audio_alt_home
+      - condensed
+      - highlights
+
+
+  URL: &default_urls
+    # highlights
+    SEARCH:      http://mlb.mlb.com/ws/search/MediaSearchService
+    GAME_DETAIL: http://mlb.mlb.com/gen/multimedia/detail/%s/%s/%s/%s.xml
+    TOP_VIDEOS:  http://mlb.mlb.com/gen/mlb/components/multimedia/topvideos.xml
+
+    # mlb.tv
+    GAMES:  http://mlb.mlb.com/mobile/data/atbatScoreboard2009.jsp?y=%s&m=%s&d=%s
+    PLAYER: http://mlb.mlb.com/flash/mediaplayer/v4.1/R9/MP4.jsp
+
+    # mlb.tv/gameday audio listing
+    MEDIA: http://mlb.mlb.com/mediacenter/index.jsp?ymd=%s%s%s
+
+  # these should be beneath URL above, but our poor-man's erb can't do Hashes
+  SITE:       http://mlb.mlb.com
+  PLAYER_SWF: http://mlb.mlb.com/flash/mediaplayer/v4.1/R9/MediaPlayer4.swf
+
+  # hopefully Plex switches back to a font with decent unicode support, and I can
+  # go back to using \u2605
+  FAVORITE_MARKER: "*"
+
+# override some values when building a dev release
+development:
+  <<: *default
+  VERSION_IN_PLUGIN_NAME: true
+
+  # disable caching
+  CACHE_TTL: 0
+  GAME_CACHE_TTL: 0
+
+  # turn on dev mode (no auto-updates), and debug
+  PLIST_DEBUG: 1
+  PLIST_DEV_MODE: 1
+
+# release version inherits defaults
+release:
+  <<: *default
