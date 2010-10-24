@@ -21,7 +21,9 @@
 	<key>PlexFrameworkVersion</key>
 	<string>1</string>
 	<key>PlexMediaContainer</key>
-	<string>Silverlight</string>
+	<array>
+		<string>Silverlight</string>
+	</array>
 	<key>PlexPluginDebug</key>
 	<string>0</string>
 	<key>PlexPluginDevMode</key>
